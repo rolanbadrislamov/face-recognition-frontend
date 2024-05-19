@@ -10,6 +10,8 @@ import { Login } from "./components/Auth/Login";
 import { PublicRoute } from "./components/Auth/PublicRoute";
 import { Register } from "./components/Auth/Register";
 import { AuthConsumer, AuthProvider } from "./context/JWTAuthContext";
+import { NavBar } from "./components/Navbar/NavBar";
+import { UserInput }  from "./components/Camera/UserInput";
 
 function App() {
   return (
@@ -50,14 +52,16 @@ function App() {
                       </PublicRoute>
                     }
                   />
+                  <Route path="/" element={<NavBar />}> 
                     <Route
                       path="/"
                       element={
                         <Authenticated>
-                          <h1>Home</h1>
+                          <UserInput />
                         </Authenticated>
                       }
                     />
+                  </Route>
                   <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
               )
