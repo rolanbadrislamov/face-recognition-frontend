@@ -11,7 +11,8 @@ import { PublicRoute } from "./components/Auth/PublicRoute";
 import { Register } from "./components/Auth/Register";
 import { AuthConsumer, AuthProvider } from "./context/JWTAuthContext";
 import { NavBar } from "./components/Navbar/NavBar";
-import { UserInput }  from "./components/Camera/UserInput";
+import { UserInput } from "./components/Camera/UserInput";
+import { ProfileCard } from "./components/Profile/ProfileCard";
 
 function App() {
   return (
@@ -52,12 +53,20 @@ function App() {
                       </PublicRoute>
                     }
                   />
-                  <Route path="/" element={<NavBar />}> 
+                  <Route path="/" element={<NavBar />}>
                     <Route
                       path="/"
                       element={
                         <Authenticated>
                           <UserInput />
+                        </Authenticated>
+                      }
+                    />
+                    <Route
+                      path="/:profileID"
+                      element={
+                        <Authenticated>
+                          <ProfileCard />
                         </Authenticated>
                       }
                     />

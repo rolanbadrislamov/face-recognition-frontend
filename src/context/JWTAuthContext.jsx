@@ -6,7 +6,6 @@ import { resetSession, setSession } from "../utils/session";
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
-  user: null,
 };
 
 export const AuthContext = createContext({
@@ -17,29 +16,24 @@ export const AuthContext = createContext({
 
 const handlers = {
   INITIALIZE: (state, action) => {
-    const { isAuthenticated, user } = action.payload;
+    const { isAuthenticated } = action.payload;
 
     return {
       ...state,
       isAuthenticated,
       isInitialized: true,
-      user,
     };
   },
-  LOGIN: (state, action) => {
-    const { user } = action.payload;
-
+  LOGIN: (state) => {
     return {
       ...state,
       isAuthenticated: true,
-      user,
     };
   },
   LOGOUT: (state) => {
     return {
       ...state,
       isAuthenticated: false,
-      user: null,
     };
   },
 };
@@ -60,13 +54,10 @@ export const AuthProvider = (props) => {
         if (accessToken && validateToken(accessToken)) {
           setSession(accessToken);
 
-          const response = await axiosInstance.get("/users/me");
-          const { data: user } = response;
           dispatch({
             type: "INITIALIZE",
             payload: {
               isAuthenticated: true,
-              user,
             },
           });
         } else {
@@ -74,7 +65,6 @@ export const AuthProvider = (props) => {
             type: "INITIALIZE",
             payload: {
               isAuthenticated: false,
-              user: null,
             },
           });
         }
@@ -84,7 +74,6 @@ export const AuthProvider = (props) => {
           type: "INITIALIZE",
           payload: {
             isAuthenticated: false,
-            user: null,
           },
         });
       }
@@ -93,33 +82,21 @@ export const AuthProvider = (props) => {
     isMounted.current = true;
   }, []);
 
-  const getTokens = async (email, password) => {
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    try {
-      const response = await axiosInstance.post("/admins/login", formData);
-      setSession(response.data.access_token);
-    } catch (error) {
-      throw error;
-    }
-  };
-
   const login = async (email, password) => {
     try {
       // Fetch the JWT token
-      const response = await axiosInstance.post("/admins/login", { email: email, password });
+      const response = await axiosInstance.post("/admins/login", {
+        email: email,
+        password,
+      });
       const { access_token } = response.data;
-  
+
       // Set the JWT token in session storage
       setSession(access_token);
-  
-      // Dispatch LOGIN action with no user data
+
+      // Dispatch LOGIN action
       dispatch({
         type: "LOGIN",
-        payload: {
-          user: null, // Since no user data is fetched at this stage
-        },
       });
     } catch (err) {
       return Promise.reject(err);
