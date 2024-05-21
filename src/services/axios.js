@@ -1,16 +1,23 @@
-import axios from 'axios';
+// Importing Axios library
+import axios from "axios";
 
-const baseURL = 'http://localhost:8000'
+// Base URL for API requests
+const baseURL = "http://localhost:8000";
 
+// Creating an Axios instance with the base URL
 const axiosInstance = axios.create({
-    baseURL
-})
+  baseURL,
+});
 
+// Adding an interceptor to the Axios instance to handle responses
 axiosInstance.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        return Promise.reject(error);
-    }
-)
+  // Success handler: returning the response directly
+  (response) => response,
+  // Error handler: returning a rejected promise with the error
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
+// Exporting the configured Axios instance as a default export
 export default axiosInstance;
