@@ -56,8 +56,6 @@ export const PhotoInput = () => {
         }
       );
 
-      console.log("Image uploaded successfully", response.data);
-
       // Navigate to the profile page with the response data
       navigate(`/${response.data.id}`, {
         state: { profileData: response.data },
@@ -97,7 +95,6 @@ export const PhotoInput = () => {
         }
       );
 
-      console.log("Image uploaded successfully", response.data);
 
       // Navigate to the profile page with the response data
       navigate(`/${response.data.id}`, {

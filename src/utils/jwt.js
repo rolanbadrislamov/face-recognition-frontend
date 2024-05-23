@@ -12,9 +12,6 @@ export const validateToken = (token) => {
   // Checking if the decoded token exists and if the current time is less than the token expiry time
   const isValid = decodedToken && now < decodedToken.expires;
 
-  // Logging the decoded token (for debugging purposes)
-  console.log(decodedToken);
-
   // Returning a boolean indicating whether the token is valid or not
   return isValid;
 };
